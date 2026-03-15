@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "buildCommand": "echo no-build",
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/api/webhook/retell", "destination": "/api/webhook/retell" },
+    { "source": "/api/outbound/(.*)", "destination": "/api/outbound" },
+    { "source": "/api/ghl/(.*)",      "destination": "/api/ghl" },
+    { "source": "/api/demo/(.*)",     "destination": "/api/demo" },
+    { "source": "/api/dashboard",     "destination": "/api/dashboard" },
+    { "source": "/(.*)",              "destination": "/index.html" }
+  ],
+  "functions": { "api/**/*.js": { "maxDuration": 30 } }
+}
