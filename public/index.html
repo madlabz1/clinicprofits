@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Clinic Profits - AI Voice System</title>
+<link rel="stylesheet" href="/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-mark">CP</div>
+      <div>
+        <div class="logo-name">Clinic Profits <span class="ai-pill">AI</span></div>
+        <div class="logo-sub">3-Agent Voice System · Retell AI x GoHighLevel</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="live-indicator"><div class="pulse"></div>LIVE</div>
+      <span class="built-by">Built by Madlabz Solutions</span>
+    </div>
+  </div>
+</header>
+<div class="agent-bar">
+  <div class="agent-tabs-inner">
+    <button class="atab active" data-agent="all" onclick="setTab('all',this)">⚡ All Agents</button>
+    <button class="atab" data-agent="inbound" onclick="setTab('inbound',this)">
+      <span>📞</span>
+      <span class="atab-info"><span class="atab-name">Agent 1 - Ashley</span><span class="atab-role">Inbound Front Desk</span></span>
+      <span class="atab-badge inb-badge">0</span>
+    </button>
+    <button class="atab" data-agent="outbound" onclick="setTab('outbound',this)">
+      <span>📤</span>
+      <span class="atab-info"><span class="atab-name">Agent 2 - Jordan</span><span class="atab-role">Outbound Lead Booking</span></span>
+      <span class="atab-badge out-badge">0</span>
+    </button>
+    <button class="atab" data-agent="reminder" onclick="setTab('reminder',this)">
+      <span>⏰</span>
+      <span class="atab-info"><span class="atab-name">Agent 3 - Casey</span><span class="atab-role">Appointment Reminders</span></span>
+      <span class="atab-badge rem-badge">0</span>
+    </button>
+  </div>
+</div>
+<div class="stats-strip">
+  <div class="stat-item"><div class="sv" id="sTot">0</div><div class="sl">Total Calls</div></div>
+  <div class="stat-item inb-s"><div class="sv" id="sInb">0</div><div class="sl">📞 Inbound</div></div>
+  <div class="stat-item out-s"><div class="sv" id="sOut">0</div><div class="sl">📤 Outbound</div></div>
+  <div class="stat-item rem-s"><div class="sv" id="sRem">0</div><div class="sl">⏰ Reminders</div></div>
+  <div class="stat-item ghl-s"><div class="sv" id="sCon">0</div><div class="sl">GHL Contacts</div></div>
+  <div class="stat-item appt-s"><div class="sv" id="sApp">0</div><div class="sl">Appointments</div></div>
+  <div class="stat-item conf-s"><div class="sv" id="sConf">0</div><div class="sl">Confirmed</div></div>
+  <div class="stat-item sms-s"><div class="sv" id="sSMS">0</div><div class="sl">SMS Sent</div></div>
+</div>
+<div class="sim-panel">
+  <div class="sim-inner">
+    <div class="sim-group" id="ctrl-inbound">
+      <div class="sim-label inb-label">📞 Agent 1 - Ashley · Inbound Front Desk</div>
+      <div class="sim-row">
+        <button class="sbtn inb-btn" onclick="simulate('inbound_new')">New Patient Books Appointment</button>
+        <button class="sbtn inb-ghost" onclick="simulate('inbound_transfer')">Insurance Inquiry → Transfer</button>
+        <div class="live-row"><input id="p1" type="tel" placeholder="+12125550100"><button class="live-btn" onclick="liveCall('inbound','p1')">🔴 Live Call</button></div>
+      </div>
+    </div>
+    <div class="sim-group" id="ctrl-outbound">
+      <div class="sim-label out-label">📤 Agent 2 - Jordan · Outbound Lead Booking</div>
+      <div class="sim-row">
+        <button class="sbtn out-btn" onclick="simulate('outbound_booked')">Lead Call → Books Appointment</button>
+        <button class="sbtn out-ghost" onclick="simulate('outbound_voicemail')">Outbound → Voicemail</button>
+        <div class="live-row"><input id="p2" type="tel" placeholder="+17185550100"><button class="live-btn" onclick="liveCall('outbound','p2')">🔴 Live Call</button></div>
+      </div>
+    </div>
+    <div class="sim-group" id="ctrl-reminder">
+      <div class="sim-label rem-label">⏰ Agent 3 - Casey · Appointment Reminders</div>
+      <div class="sim-row">
+        <button class="sbtn rem-btn" onclick="simulate('reminder_confirmed')">Reminder → Patient Confirms</button>
+        <button class="sbtn rem-ghost" onclick="simulate('reminder_reschedule')">Reminder → Reschedules Live</button>
+        <div class="live-row"><input id="p3" type="tel" placeholder="+13475550100"><button class="live-btn" onclick="liveCall('reminder','p3')">🔴 Live Call</button></div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetDemo()">↺ Reset All Demo Data</button>
+  </div>
+</div>
+<main class="dash">
+  <div class="dash-grid">
+    <div class="panel wide-panel">
+      <div class="ph">
+        <span class="pt">📋 Call Log</span>
+        <div class="ph-right">
+          <span class="pbadge" id="bCalls">0 calls</span>
+          <div class="filt">
+            <button class="fb active" onclick="filterCalls('all',this)">All</button>
+            <button class="fb inb-fb" onclick="filterCalls('inbound',this)">Inbound</button>
+            <button class="fb out-fb" onclick="filterCalls('outbound',this)">Outbound</button>
+            <button class="fb rem-fb" onclick="filterCalls('reminder',this)">Reminder</button>
+          </div>
+        </div>
+      </div>
+      <div class="pb" id="callLog"><div class="empty"><div class="ei">📞</div><div>No calls yet</div><div class="es">Run a simulation above to see live data</div></div></div>
+    </div>
+    <div class="panel-col">
+      <div class="panel">
+        <div class="ph"><span class="pt">👤 GHL Contacts</span><span class="pbadge green-b" id="bContacts">0</span></div>
+        <div class="pb" id="contactList"><div class="empty"><div class="ei">👤</div><div class="es">Auto-created in GoHighLevel after each call</div></div></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">📅 Appointments Booked</span><span class="pbadge blue-b" id="bAppts">0</span></div>
+        <div class="pb" id="apptList"><div class="empty"><div class="ei">📅</div><div class="es">Booked live by AI agents</div></div></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">⏰ Reminder Outcomes</span><span class="pbadge purple-b" id="bReminders">0</span></div>
+        <div class="pb" id="reminderList"><div class="empty"><div class="ei">⏰</div><div class="es">Confirmation outcomes from Agent 3 (Casey)</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="transcript-drawer" id="drawer" style="display:none">
+    <div class="td-inner">
+      <div class="td-hdr"><div><span class="td-title">🎙️ Call Transcript</span><span class="td-meta" id="dMeta"></span></div><button class="close-x" onclick="closeDrawer()">✕ Close</button></div>
+      <div class="td-body" id="tLines"></div>
+      <div class="td-summary" id="dSummary"></div>
+    </div>
+  </div>
+  <div class="arch-section">
+    <h3 class="arch-title">⚙️ Live System Architecture - How All 3 Agents Work Together</h3>
+    <div class="arch-grid">
+      <div class="arch-agent inb-arch">
+        <div class="aa-hdr"><span class="aa-icon">📞</span><div><div class="aa-name">Ashley - Agent 1</div><div class="aa-role">Inbound Front Desk</div><div class="aa-id">agent_7151739a203c900b591cd16d49</div></div></div>
+        <div class="aa-steps"><div class="aa-step">Patient calls clinic number 24/7</div><div class="aa-step">AI answers - no hold time, no missed calls</div><div class="aa-step">Identifies new vs. existing patient</div><div class="aa-step">Books appointment or transfers to staff</div><div class="aa-step">Contact + note auto-created in GHL</div></div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-agent out-arch">
+        <div class="aa-hdr"><span class="aa-icon">📤</span><div><div class="aa-name">Jordan - Agent 2</div><div class="aa-role">Outbound Lead Booking</div><div class="aa-id">agent_a85b0e081d15c6e2170da06daa</div></div></div>
+        <div class="aa-steps"><div class="aa-step">GHL triggers call to new leads</div><div class="aa-step">AI follows up naturally, not pushy</div><div class="aa-step">Handles objections, overcomes hesitation</div><div class="aa-step">Books appointment or leaves voicemail</div><div class="aa-step">Logs outcome + tags contact in GHL</div></div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-agent rem-arch">
+        <div class="aa-hdr"><span class="aa-icon">⏰</span><div><div class="aa-name">Casey - Agent 3</div><div class="aa-role">Appointment Reminders</div><div class="aa-id">agent_1ce2ed24366289ed006f663e6d</div></div></div>
+        <div class="aa-steps"><div class="aa-step">Calls patients 24-48hrs before appointment</div><div class="aa-step">Confirms attendance in under 2 mins</div><div class="aa-step">Reschedules on the spot if needed</div><div class="aa-step">Leaves voicemail + sends SMS backup</div><div class="aa-step">Logs confirmed/cancelled/rescheduled in GHL</div></div>
+      </div>
+    </div>
+    <div class="ghl-flow">
+      <div class="gf-title">🔄 GoHighLevel Backend - Fires Automatically After Every Call</div>
+      <div class="gf-steps">
+        <div class="gf-step"><div class="gf-icon">📋</div><div>Contact Created</div></div>
+        <div class="gf-arr">→</div>
+        <div class="gf-step"><div class="gf-icon">🏷️</div><div>Tagged + Noted</div></div>
+        <div class="gf-arr">→</div>
+        <div class="gf-step"><div class="gf-icon">📅</div><div>Appointment Booked</div></div>
+        <div class="gf-arr">→</div>
+        <div class="gf-step"><div class="gf-icon">💬</div><div>SMS Confirmation</div></div>
+        <div class="gf-arr">→</div>
+        <div class="gf-step"><div class="gf-icon">⏰</div><div>Reminder Triggered</div></div>
+        <div class="gf-arr">→</div>
+        <div class="gf-step"><div class="gf-icon">✅</div><div>Attendance Confirmed</div></div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>
